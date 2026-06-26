@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David Paul P — Software Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060606;
+  --bg2:#0a0a0a;
+  --bg3:#111;
+  --bg4:#181818;
+  --white:#f0f0f0;
+  --grey:#8a8a8a;
+  --grey2:#555;
+  --grey3:#2a2a2a;
+  --border:rgba(255,255,255,0.06);
+  --border2:rgba(255,255,255,0.11);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+::selection{background:rgba(255,255,255,0.12);color:var(--white)}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--grey3);border-radius:2px}
+
+.section-canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.65s cubic-bezier(0.22,1,0.36,1),transform 0.65s cubic-bezier(0.22,1,0.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-24px);transition:opacity 0.6s cubic-bezier(0.22,1,0.36,1),transform 0.6s cubic-bezier(0.22,1,0.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(24px);transition:opacity 0.6s cubic-bezier(0.22,1,0.36,1),transform 0.6s cubic-bezier(0.22,1,0.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.stagger>*{opacity:0;transform:translateY(20px);transition:opacity 0.55s cubic-bezier(0.22,1,0.36,1),transform 0.55s cubic-bezier(0.22,1,0.36,1)}
+.stagger.visible>*:nth-child(1){opacity:1;transform:translateY(0);transition-delay:0s}
+.stagger.visible>*:nth-child(2){opacity:1;transform:translateY(0);transition-delay:0.08s}
+.stagger.visible>*:nth-child(3){opacity:1;transform:translateY(0);transition-delay:0.16s}
+.stagger.visible>*:nth-child(4){opacity:1;transform:translateY(0);transition-delay:0.24s}
+.stagger.visible>*:nth-child(5){opacity:1;transform:translateY(0);transition-delay:0.32s}
+.stagger.visible>*:nth-child(6){opacity:1;transform:translateY(0);transition-delay:0.40s}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 64px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,6,6,0.85);backdrop-filter:blur(32px);border-bottom:1px solid var(--border);transition:padding 0.4s ease}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:0.95rem;letter-spacing:0.03em;color:var(--white)}
+.logo span{color:var(--grey2)}
+.nav-links{display:flex;gap:44px;list-style:none}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:400;color:var(--grey);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--white);transition:width 0.3s ease}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 22px;border:1px solid var(--border2);border-radius:2px;color:var(--white)!important;text-decoration:none;transition:background 0.2s,border-color 0.2s}
+.nav-cta:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.22)}
+.nav-cta::after{display:none!important}
+
+/* STATUS BAR */
+.status-bar{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:900;display:flex;align-items:center;border:1px solid var(--border2);border-radius:2px;overflow:hidden;background:rgba(6,6,6,0.92);backdrop-filter:blur(20px);white-space:nowrap}
+.sb-item{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;color:var(--grey2);padding:8px 18px;border-right:1px solid var(--border);text-transform:uppercase}
+.sb-item:last-child{border-right:none}
+.sb-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#888;margin-right:6px;position:relative;top:-0.5px;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+
+/* HERO */
+#hero{position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;overflow:hidden;gap:0}
+.hero-left{position:relative;z-index:10;padding:160px 64px 80px}
+.hero-right{position:relative;height:100vh;display:flex;align-items:center;justify-content:center}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;background:transparent}
+
+.h-eyebrow{font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey2);display:flex;align-items:center;gap:14px;margin-bottom:30px}
+.h-eyebrow::before{content:'';width:32px;height:1px;background:var(--grey3)}
+.open-dot{display:inline-flex;align-items:center;gap:7px}
+.open-dot::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#666;animation:pulse 2.5s ease-in-out infinite}
+h1.hero-name{font-family:'Syne',sans-serif;font-size:clamp(3.8rem,6vw,7rem);font-weight:800;line-height:0.9;letter-spacing:-0.045em;color:var(--white);margin-bottom:8px}
+h1.hero-name .surname{color:var(--grey2);display:block;font-weight:500;letter-spacing:-0.03em}
+.hero-divider{width:36px;height:1px;background:var(--grey3);margin:30px 0}
+.hero-role{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:500;color:var(--grey);margin-bottom:16px;letter-spacing:-0.01em}
+.hero-desc{font-size:0.88rem;color:var(--grey2);max-width:400px;line-height:1.85;margin-bottom:44px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;background:var(--white);color:var(--bg);text-decoration:none;font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;border-radius:2px;border:1px solid var(--white);transition:background 0.25s,color 0.25s,border-color 0.25s;cursor:pointer}
+.btn-primary:hover{background:transparent;color:var(--white);border-color:var(--border2)}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;background:transparent;color:var(--grey);text-decoration:none;font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;border-radius:2px;border:1px solid var(--border2);transition:border-color 0.2s,color 0.2s}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.28);color:var(--white)}
+.hero-stats{display:flex;gap:44px;margin-top:52px;padding-top:28px;border-top:1px solid var(--border)}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;color:var(--white);letter-spacing:-0.05em;line-height:1}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-top:5px}
+
+/* HERO BG CANVAS */
+#hero-bg-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.45}
+#hero-particles-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.55}
+
+/* HERO SOCIALS */
+.hero-socials{display:flex;align-items:center;gap:14px;margin-top:22px;margin-bottom:0}
+.hero-soc-link{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey2);text-decoration:none;transition:color 0.2s}
+.hero-soc-link:hover{color:var(--white)}
+.hero-soc-sep{width:1px;height:12px;background:var(--grey3)}
+
+/* PHOTO */
+.hero-photo-circle{width:340px;height:340px;border-radius:50%;overflow:hidden;display:flex;justify-content:center;align-items:center;position:relative;z-index:10;background:#0d0d0d;border:2px solid rgba(255,255,255,.08);box-shadow:0 0 20px rgba(255,255,255,.08),0 0 50px rgba(255,255,255,.04)}
+.hero-photo{width:100%;height:100%;object-fit:cover;border-radius:50%}
+
+/* SECTION SHARED */
+section{position:relative;overflow:hidden}
+.sec-inner{position:relative;z-index:5}
+.sec-label{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey2);display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.sec-label::before{content:'';width:18px;height:1px;background:var(--grey3)}
+h2.sec-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,3.5vw,3.2rem);font-weight:800;letter-spacing:-0.045em;line-height:1.0;color:var(--white);margin-bottom:14px}
+.sec-rule{position:absolute;top:0;left:0;right:0;height:1px;background:var(--border)}
+.noise-overlay{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:160px}
+
+/* ABOUT */
+#about{background:var(--bg2);padding:130px 64px}
+.about-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:64px;position:relative;z-index:5}
+.about-text p{font-size:0.88rem;color:var(--grey);line-height:1.9;margin-bottom:18px}
+.about-text p strong{color:var(--white);font-weight:500}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:28px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:0.63rem;padding:5px 13px;border:1px solid var(--border2);border-radius:2px;color:var(--grey2);letter-spacing:0.06em;text-transform:uppercase;transition:border-color 0.2s,color 0.2s;cursor:default}
+.tag:hover{border-color:rgba(255,255,255,0.28);color:var(--white)}
+.timeline{position:relative;padding-left:22px}
+.timeline::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:1px;background:var(--grey3)}
+.tl-item{padding-bottom:34px;position:relative}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:'';position:absolute;left:-26px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--bg2);border:1px solid var(--grey2);transition:background 0.25s,border-color 0.25s}
+.tl-item:hover::before{background:var(--white);border-color:var(--white)}
+.tl-year{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--grey2);letter-spacing:0.1em;margin-bottom:5px;text-transform:uppercase}
+.tl-title{font-family:'Syne',sans-serif;font-size:0.88rem;font-weight:700;color:var(--white);margin-bottom:3px}
+.tl-sub{font-size:0.78rem;color:var(--grey2)}
+#about-canvas{position:absolute;right:0;top:0;width:46%;height:100%;z-index:2;pointer-events:none;opacity:0.55}
+
+/* SKILLS */
+#skills{background:var(--bg);padding:130px 64px}
+#skills-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:64px;border:1px solid var(--border);position:relative;z-index:5}
+.sk-card{background:rgba(6,6,6,0.92);padding:40px 34px;border-right:1px solid var(--border);transition:background 0.3s;position:relative;backdrop-filter:blur(8px)}
+.sk-card:last-child{border-right:none}
+.sk-card:hover{background:rgba(17,17,17,0.99)}
+.sk-num{font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:700;color:var(--grey3);letter-spacing:0.12em;margin-bottom:26px;display:block}
+.sk-card h3{font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;color:var(--white);margin-bottom:22px;letter-spacing:0.04em;text-transform:uppercase}
+.skill-list{display:flex;flex-direction:column;gap:11px;list-style:none}
+.skill-list li{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--grey);letter-spacing:0.02em;display:flex;align-items:center;gap:11px}
+.skill-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--grey3);flex-shrink:0;transition:background 0.2s}
+.sk-card:hover .skill-list li::before{background:var(--grey2)}
+
+/* PROJECTS */
+#projects{background:var(--bg2);padding:130px 64px}
+#projects-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.proj-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;position:relative;z-index:5}
+.proj-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1px;border:1px solid var(--border);position:relative;z-index:5}
+.proj-card{background:rgba(10,10,10,0.94);padding:34px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background 0.3s;display:flex;flex-direction:column;min-height:270px;backdrop-filter:blur(4px)}
+.proj-card:hover{background:rgba(17,17,17,0.99)}
+.proj-card.c8{grid-column:span 8}
+.proj-card.c4{grid-column:span 4}
+.proj-card.c6{grid-column:span 6}
+.proj-card.c12{grid-column:span 12}
+.proj-card.no-bb{border-bottom:none}
+.proj-card.no-br{border-right:none}
+.proj-idx{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--grey3);letter-spacing:0.1em;padding-bottom:22px;margin-bottom:auto}
+.proj-type{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--grey2);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:9px}
+.proj-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--white);letter-spacing:-0.02em;margin-bottom:9px}
+.proj-card.c8 .proj-title{font-size:1.35rem}
+.proj-desc{font-size:0.78rem;color:var(--grey2);line-height:1.7;margin-bottom:18px;flex:1}
+.proj-stack{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
+.stack-item{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--grey3);letter-spacing:0.06em;text-transform:uppercase;border:1px solid var(--border);padding:3px 10px;border-radius:2px;transition:border-color 0.2s,color 0.2s}
+.proj-card:hover .stack-item{border-color:var(--border2);color:var(--grey2)}
+.proj-link{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:0.63rem;color:var(--grey2);text-decoration:none;letter-spacing:0.06em;margin-top:14px;transition:color 0.2s}
+.proj-link:hover{color:var(--white)}
+.proj-link svg{width:9px;height:9px}
+
+/* CERTIFICATIONS */
+#certifications{background:var(--bg);padding:130px 64px}
+#cert-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;border:1px solid var(--border);margin-top:64px;position:relative;z-index:5}
+.cert-card{background:rgba(6,6,6,0.92);padding:38px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background 0.3s;backdrop-filter:blur(8px)}
+.cert-card:hover{background:rgba(17,17,17,0.99)}
+.cert-card.no-br{border-right:none}
+.cert-card.no-bb{border-bottom:none}
+.cert-idx{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--grey3);letter-spacing:0.1em;display:block;margin-bottom:22px}
+.cert-title{font-family:'Syne',sans-serif;font-size:0.98rem;font-weight:700;color:var(--white);margin-bottom:8px}
+.cert-body{font-size:0.8rem;color:var(--grey2);line-height:1.65}
+.cert-badge{display:inline-block;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border-radius:2px;border:1px solid var(--border2);color:var(--grey2)}
+.cert-view{display:inline-flex;align-items:center;gap:6px;margin-left:8px;margin-top:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.63rem;letter-spacing:0.08em;color:var(--grey2);transition:color 0.25s ease}
+.cert-view svg{width:9px;height:9px}
+.cert-view:hover{color:var(--white)}
+
+/* CONTACT */
+#contact{background:var(--bg2);padding:130px 64px}
+#contact-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.contact-layout{display:grid;grid-template-columns:1fr 1.3fr;gap:80px;margin-top:64px;align-items:start;position:relative;z-index:5}
+.c-item{display:flex;gap:22px;align-items:flex-start;margin-bottom:26px;padding-bottom:26px;border-bottom:1px solid var(--border)}
+.c-item:last-of-type{border-bottom:none}
+.c-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--grey3);letter-spacing:0.1em;text-transform:uppercase;min-width:64px;padding-top:2px}
+.c-value a,.c-value p{font-size:0.88rem;color:var(--grey);text-decoration:none;transition:color 0.2s}
+.c-value a:hover{color:var(--white)}
+.social-strip{display:flex;margin-top:34px;border:1px solid var(--border);border-radius:2px;overflow:hidden}
+.soc-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;border-right:1px solid var(--border);transition:background 0.2s,color 0.2s}
+.soc-btn:last-child{border-right:none}
+.soc-btn:hover{background:var(--bg3);color:var(--white)}
+.contact-form{display:flex;flex-direction:column;border:1px solid var(--border2);border-radius:2px;overflow:hidden;background:rgba(17,17,17,0.96);backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(0,0,0,0.6)}
+.form-field{display:flex;flex-direction:column;border-bottom:1px solid var(--border2)}
+.form-field:last-of-type{border-bottom:none}
+.form-field label{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:rgba(255,255,255,0.4);letter-spacing:0.12em;text-transform:uppercase;padding:14px 20px 0}
+.form-field input,.form-field textarea{background:transparent;border:none;outline:none;padding:8px 20px 14px;color:var(--white);font-family:'Inter',sans-serif;font-size:0.88rem;resize:none}
+.form-field input::placeholder,.form-field textarea::placeholder{color:rgba(255,255,255,0.18)}
+.form-field input:focus,.form-field textarea:focus{background:rgba(255,255,255,0.03)}
+.form-submit{padding:16px 20px;background:rgba(255,255,255,0.06);border:none;border-top:1px solid var(--border2);color:var(--white);font-family:'Syne',sans-serif;font-size:0.76rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s}
+.form-submit:hover{background:rgba(255,255,255,0.11)}
+.form-submit span{color:rgba(255,255,255,0.3);font-weight:400;font-family:'JetBrains Mono',monospace;font-size:0.66rem;letter-spacing:0.06em}
+
+/* FOOTER */
+footer{position:relative;z-index:5;padding:30px 64px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--bg)}
+.ft-name{font-family:'Syne',sans-serif;font-weight:800;font-size:0.86rem;color:var(--white)}
+footer p{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--grey3);letter-spacing:0.06em}
+
+/* MOBILE */
+@media(max-width:900px){
+  nav{padding:14px 20px}
+  .nav-links{display:none}
+  .status-bar{display:none}
+  #hero{grid-template-columns:1fr}
+  .hero-left{padding:120px 24px 64px}
+  .hero-right{display:none}
+  #about,#skills,#projects,#certifications,#contact{padding:90px 24px!important}
+  .about-layout,.contact-layout{grid-template-columns:1fr;gap:48px}
+  #about-canvas{display:none}
+  .skills-grid{grid-template-columns:1fr}
+  .sk-card{border-right:none;border-bottom:1px solid var(--border)}
+  .proj-card.c8,.proj-card.c4,.proj-card.c6,.proj-card.c12{grid-column:span 12}
+  .cert-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:10px;padding:24px 20px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">David Paul <span>P</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certifications">Achievements</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="sb-item"><span class="sb-dot"></span>Open to opportunities</div>
+  <div class="sb-item">Chennai, India</div>
+  <div class="sb-item">B.Tech CSE (Hons. AI &amp; DS) &middot; CGPA 8.6</div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-bg-canvas"></canvas>
+  <canvas id="hero-particles-canvas"></canvas>
+  <div class="hero-left">
+    <div class="h-eyebrow">
+      <span class="open-dot">Building Intelligent Solutions</span>
+    </div>
+    <h1 class="hero-name reveal">
+      David
+      <span class="surname">Paul P</span>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-role reveal">Software Developer &nbsp;/&nbsp; AI &amp; Data Science</p>
+    <p class="hero-desc reveal">Building intelligent software and AI-driven solutions — applying machine learning and modern software engineering to solve real-world problems.</p>
+    <div class="actions stagger">
+      <a href="#projects" class="btn-primary">View Projects &rarr;</a>
+      <a href="#contact" class="btn-secondary">Contact</a>
+      <a href="David_Paul_P_Resume.pdf" class="btn-secondary" target="_blank">Resume &#8599;</a>
+    </div>
+    <div class="hero-socials">
+      <a href="https://www.linkedin.com/in/david-paul-p-a4a733375" target="_blank" class="hero-soc-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <span class="hero-soc-sep"></span>
+      <a href="https://github.com/david230705" target="_blank" class="hero-soc-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
+    </div>
+    <div class="hero-stats stagger">
+      <div class="stat">
+        <div class="stat-num">8.6</div>
+        <div class="stat-label">CGPA</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2x</div>
+        <div class="stat-label">Azure Certified</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-photo-circle">
+      <img src="profile.png" alt="David Paul P" class="hero-photo">
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <canvas id="about-canvas" class="section-canvas"></canvas>
+  <div class="noise-overlay"></div>
+  <div class="sec-rule"></div>
+  <div class="sec-inner">
+    <div class="sec-label reveal">Background</div>
+    <h2 class="sec-title reveal">About Me</h2>
+    <div class="about-layout">
+      <div class="about-text reveal-left">
+        <p>I'm a <strong>B.Tech Computer Science Engineering (Honors in Artificial Intelligence &amp; Data Science)</strong> student.</p>
+        <p>My work sits at the intersection of <strong>AI and machine learning systems</strong> and full-stack product development. I'm drawn to problems that require both algorithmic thinking and user-facing precision — building things that actually get used.</p>
+        <p>I've shipped production code as a <strong>Full Stack Intern at Retech Solutions, Chennai</strong>, and led Google's campus tech community as a <strong>Google Student Ambassador (2025)</strong>.</p>
+        <p>Good software begins with deeply understanding the problem, not the tools.</p>
+        <div class="tags">
+          <span class="tag">Artificial Intelligence</span>
+          <span class="tag">Machine Learning</span>
+          <span class="tag">Full Stack Dev</span>
+          <span class="tag">Python</span>
+          <span class="tag">IoT</span>
+          <span class="tag">Problem Solving</span>
+        </div>
+      </div>
+      <div class="timeline reveal-right">
+        <div class="tl-item">
+          <div class="tl-year">2021 &mdash; Present</div>
+          <div class="tl-title">B.Tech Computer Science Engineering (Hons. AI &amp; DS)</div>
+          <div class="tl-sub">Karunya Institute of Technology and Sciences &middot; Honors in Artificial Intelligence &amp; Data Science &middot; CGPA 8.6</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Internship</div>
+          <div class="tl-title">Full Stack Developer Intern</div>
+          <div class="tl-sub">Retech Solutions, Chennai</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2025</div>
+          <div class="tl-title">Google Student Ambassador</div>
+          <div class="tl-sub">Nexus Club (Google) &nbsp;&middot;&nbsp; Coordinator</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Hackathon</div>
+          <div class="tl-title">4th Place &mdash; GFG Hacks</div>
+          <div class="tl-sub">GeeksForGeeks Competitive Hackathon</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <canvas id="skills-canvas" class="section-canvas"></canvas>
+  <div class="noise-overlay"></div>
+  <div class="sec-rule"></div>
+  <div class="sec-inner">
+    <div class="sec-label reveal">Expertise</div>
+    <h2 class="sec-title reveal">Technical Skills</h2>
+    <div class="skills-grid stagger">
+      <div class="sk-card">
+        <span class="sk-num">01</span>
+        <h3>Programming Languages</h3>
+        <ul class="skill-list">
+          <li>Java</li>
+          <li>Python</li>
+          <li>C</li>
+        </ul>
+      </div>
+      <div class="sk-card">
+        <span class="sk-num">02</span>
+        <h3>Web Development</h3>
+        <ul class="skill-list">
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+        </ul>
+      </div>
+      <div class="sk-card" style="border-right:none">
+        <span class="sk-num">03</span>
+        <h3>AI &amp; Machine Learning</h3>
+        <ul class="skill-list">
+          <li>Python-based ML</li>
+          <li>Model Development</li>
+          <li>Data-driven Solutions</li>
+          <li>AI Automation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <canvas id="projects-canvas" class="section-canvas"></canvas>
+  <div class="noise-overlay"></div>
+  <div class="sec-rule"></div>
+  <div class="sec-inner">
+    <div class="proj-header reveal">
+      <div>
+        <div class="sec-label">Work</div>
+        <h2 class="sec-title">Featured Projects</h2>
+      </div>
+      <a href="https://github.com/david230705" target="_blank" class="btn-secondary">GitHub &#8599;</a>
+    </div>
+
+    <!-- Row 1: 8 + 4 -->
+    <div class="proj-grid">
+      <div class="proj-card c8 reveal">
+        <div class="proj-idx">01 &mdash; AI / Machine Learning</div>
+        <div class="proj-type">Automation &middot; Education Technology</div>
+        <div class="proj-title">AI-Based Answer Paper Evaluation</div>
+        <p class="proj-desc">Automated system using AI and ML to assess and grade student answer sheets — reducing manual grading effort and delivering consistent, scalable scoring.</p>
+        <div class="proj-stack">
+          <span class="stack-item">Python</span>
+          <span class="stack-item">Machine Learning</span>
+          <span class="stack-item">AI</span>
+        </div>
+        <a href="https://github.com/david230705/AI-based-Answer-Paper-Evaluation" class="proj-link" target="_blank">
+          View on GitHub
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
+        </a>
+      </div>
+      <div class="proj-card c4 no-br reveal">
+        <div class="proj-idx">02 &mdash; Computer Vision / Deep Learning</div>
+        <div class="proj-type">Healthcare &middot; Computer Vision</div>
+        <div class="proj-title">Hairline Growth Tracker</div>
+        <p class="proj-desc">Uses Computer Vision and Deep Learning to monitor hair density and boundary shifts over time. OpenCV and MediaPipe align facial landmarks; a U-Net model maps hairline boundaries and quantifies growth trends.</p>
+        <div class="proj-stack">
+          <span class="stack-item">Python</span>
+          <span class="stack-item">OpenCV</span>
+          <span class="stack-item">Deep Learning</span>
+          <span class="stack-item">U-Net</span>
+        </div>
+        <a href="https://github.com/david230705/Hairline-Growth-Tracker" class="proj-link" target="_blank">
+          View on GitHub
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Row 2: 6 + 6 -->
+    <div class="proj-grid" style="border-top:none">
+      <div class="proj-card c6 reveal">
+        <div class="proj-idx">03 &mdash; Web Development</div>
+        <div class="proj-type">E-commerce &middot; Full Stack</div>
+        <div class="proj-title">Grocery Web Application</div>
+        <p class="proj-desc">Full-stack shopping platform with a modern JavaScript frontend and clean, responsive UX built from end to end.</p>
+        <div class="proj-stack">
+          <span class="stack-item">JavaScript</span>
+          <span class="stack-item">HTML</span>
+          <span class="stack-item">CSS</span>
+        </div>
+        <a href="https://github.com/david230705/Grocery-Delivery-Application---Full-Stack" class="proj-link" target="_blank">
+          View on GitHub
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
+        </a>
+      </div>
+      <div class="proj-card c6 no-br reveal">
+        <div class="proj-idx">04 &mdash; AI / Accessibility</div>
+        <div class="proj-type">Accessibility &middot; NLP</div>
+        <div class="proj-title">Easy Accessibility for Disabled Students</div>
+        <p class="proj-desc">Communication-support AI tool using natural language processing to improve accessibility and assist students with interaction and learning challenges.</p>
+        <div class="proj-stack">
+          <span class="stack-item">Python</span>
+          <span class="stack-item">AI</span>
+          <span class="stack-item">NLP</span>
+        </div>
+        <a href="https://github.com/david230705/Easy-Accessibility-for-Disabled-Students" class="proj-link" target="_blank">
+          View on GitHub
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Row 3: full width — Blindspot -->
+    <div class="proj-grid" style="border-top:none">
+      <div class="proj-card c12 no-br reveal" style="min-height:auto">
+        <div class="proj-idx">05 &mdash; IoT / Embedded Systems</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start">
+          <div>
+            <div class="proj-title" style="font-size:1.18rem">Blindspot Detection System</div>
+            <p class="proj-desc">IoT vehicle safety system using embedded sensors to detect blind spots and alert drivers in real time — improving road awareness and reducing collision risk.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding-top:4px">
+            <div class="proj-stack"><span class="stack-item">IoT</span><span class="stack-item">Embedded Systems</span></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:0.63rem;color:var(--grey3);letter-spacing:0.06em">No public repository</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <canvas id="cert-canvas" class="section-canvas"></canvas>
+  <div class="noise-overlay"></div>
+  <div class="sec-rule"></div>
+  <div class="sec-inner">
+    <div class="sec-label reveal">Recognition</div>
+    <h2 class="sec-title reveal">Certifications &amp; Achievements</h2>
+    <div class="cert-grid stagger">
+
+      <div class="cert-card">
+        <span class="cert-idx">01</span>
+        <div class="cert-title">Azure AI Fundamentals</div>
+        <p class="cert-body">Microsoft Certified — core AI and ML concepts with hands-on Azure AI services knowledge for cloud-based intelligent applications.</p>
+        <span class="cert-badge">Microsoft</span>
+        <a href="Azure_AI_Fundamentals.pdf" target="_blank" class="cert-view">
+          View Certificate
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
+        </a>
+      </div>
+
+      <div class="cert-card no-br">
+        <span class="cert-idx">02</span>
+        <div class="cert-title">Azure Data Fundamentals</div>
+        <p class="cert-body">Microsoft Certified — foundational understanding of data concepts, relational and non-relational data, and Azure data services.</p>
+        <span class="cert-badge">Microsoft</span>
+        <a href="Azure_Data_Fundamentals.pdf" target="_blank" class="cert-view">
+          View Certificate
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
+        </a>
+      </div>
+
+      <div class="cert-card no-bb">
+        <span class="cert-idx">03</span>
+        <div class="cert-title">4th Place &mdash; GFG Hacks</div>
+        <p class="cert-body">Competitive placement at GeeksForGeeks Hackathon, recognizing technical innovation, problem-solving, and execution under pressure.</p>
+        <span class="cert-badge">Hackathon</span>
+        <a href="GFG_Hackathon_Certificate.pdf" target="_blank" class="cert-view">
+          View Certificate
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
+        </a>
+      </div>
+
+      <div class="cert-card no-br no-bb">
+        <span class="cert-idx">04</span>
+        <div class="cert-title">Google Student Ambassador 2025</div>
+        <p class="cert-body">Coordinator at Nexus Club — representing Google's student technology ecosystem on campus and driving developer community growth.</p>
+        <span class="cert-badge">Google</span>
+        <a href="Google_Student_Ambassador.pdf" target="_blank" class="cert-view">
+          View Certificate
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 9L9 1M9 1H3M9 1V7"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <canvas id="contact-canvas" class="section-canvas"></canvas>
+  <div class="noise-overlay"></div>
+  <div class="sec-rule"></div>
+  <div class="sec-inner">
+    <div class="sec-label reveal">Get in touch</div>
+    <h2 class="sec-title reveal">Let's Work Together</h2>
+    <div class="contact-layout">
+      <div class="reveal-left">
+        <div class="c-item">
+          <div class="c-label">Email</div>
+          <div class="c-value"><a href="mailto:david230705.work@gmail.com">david230705.work@gmail.com</a></div>
+        </div>
+        <div class="c-item">
+          <div class="c-label">Phone</div>
+          <div class="c-value"><a href="tel:+917550063450">+91 75500 63450</a></div>
+        </div>
+        <div class="c-item">
+          <div class="c-label">Location</div>
+          <div class="c-value"><p>Chennai, Tamil Nadu, India</p></div>
+        </div>
+        <div class="social-strip">
+          <a href="https://www.linkedin.com/in/david-paul-p-a4a733375" target="_blank" class="soc-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/david230705" target="_blank" class="soc-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+      <div class="contact-form reveal-right">
+        <div class="form-field">
+          <label>Name</label>
+          <input type="text" placeholder="Your full name">
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-field">
+          <label>Message</label>
+          <textarea rows="5" placeholder="Tell me about your project or opportunity..."></textarea>
+        </div>
+        <button class="form-submit">
+          Send Message
+          <span>&rarr; transmit</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="ft-name">David Paul P</span>
+  <p>&copy; 2025 &mdash; Aspiring Software Developer</p>
+  <p>Chennai, India</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* REVEAL */
+function initReveal(){
+  const targets = document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stagger');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add('visible');
+      else e.target.classList.remove('visible');
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  targets.forEach(t=>io.observe(t));
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  initReveal();
+  document.querySelectorAll('#hero .reveal,#hero .reveal-left,#hero .reveal-right,#hero .stagger').forEach((el,i)=>{
+    setTimeout(()=>el.classList.add('visible'),i*100);
+  });
+});
+
+/* THREE.JS HELPERS */
+function makeRenderer(canvas){
+  const r=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'low-power'});
+  r.setPixelRatio(Math.min(devicePixelRatio,1.5));
+  r.setClearColor(0x000000,0);
+  return r;
+}
+function parentSize(canvas){
+  const p=canvas.parentElement;
+  return{w:p.clientWidth||window.innerWidth,h:p.clientHeight||600};
+}
+function onResize(renderer,camera,canvas){
+  let t;
+  window.addEventListener('resize',()=>{
+    clearTimeout(t);
+    t=setTimeout(()=>{
+      const{w,h}=parentSize(canvas);
+      renderer.setSize(w,h,false);
+      camera.aspect=w/h;
+      camera.updateProjectionMatrix();
+    },80);
+  });
+}
+
+/* HERO BG — neural-network node grid spanning full hero */
+(function heroBgScene(){
+  const canvas = document.getElementById('hero-bg-canvas');
+  if(!canvas) return;
+  const renderer = makeRenderer(canvas);
+  const scene = new THREE.Scene();
+  const {w, h} = parentSize(canvas);
+  renderer.setSize(w, h, false);
+  const camera = new THREE.PerspectiveCamera(60, w/h, 0.1, 400);
+  camera.position.z = 38;
+
+  const NODE_COUNT = 40;
+  const nodes = [];
+  for(let i = 0; i < NODE_COUNT; i++){
+    nodes.push({
+      x:(Math.random()-0.5)*90, y:(Math.random()-0.5)*55, z:(Math.random()-0.5)*18,
+      vx:(Math.random()-0.5)*0.018, vy:(Math.random()-0.5)*0.012
+    });
+  }
+
+  const dotGeo = new THREE.BufferGeometry();
+  const dotPos = new Float32Array(NODE_COUNT*3);
+  dotGeo.setAttribute('position', new THREE.BufferAttribute(dotPos,3));
+  scene.add(new THREE.Points(dotGeo, new THREE.PointsMaterial({color:0x3a3a3a,size:0.28,sizeAttenuation:true})));
+
+  const MAX_LINES = NODE_COUNT*5;
+  const linePos = new Float32Array(MAX_LINES*2*3);
+  const lineGeo = new THREE.BufferGeometry();
+  lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos,3));
+  lineGeo.setDrawRange(0,0);
+  scene.add(new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({color:0x282828,transparent:true,opacity:0.5})));
+
+  function loop(){
+    requestAnimationFrame(loop);
+    for(let i=0;i<NODE_COUNT;i++){
+      const n=nodes[i];
+      n.x+=n.vx; n.y+=n.vy;
+      if(Math.abs(n.x)>45) n.vx*=-1;
+      if(Math.abs(n.y)>27) n.vy*=-1;
+      dotPos[i*3]=n.x; dotPos[i*3+1]=n.y; dotPos[i*3+2]=n.z;
+    }
+    dotGeo.attributes.position.needsUpdate=true;
+    let lIdx=0;
+    for(let i=0;i<NODE_COUNT;i++){
+      for(let j=i+1;j<NODE_COUNT;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y, dz=nodes[i].z-nodes[j].z;
+        if(Math.sqrt(dx*dx+dy*dy+dz*dz)<13.5 && lIdx<MAX_LINES){
+          linePos[lIdx*6]=nodes[i].x; linePos[lIdx*6+1]=nodes[i].y; linePos[lIdx*6+2]=nodes[i].z;
+          linePos[lIdx*6+3]=nodes[j].x; linePos[lIdx*6+4]=nodes[j].y; linePos[lIdx*6+5]=nodes[j].z;
+          lIdx++;
+        }
+      }
+    }
+    lineGeo.attributes.position.needsUpdate=true;
+    lineGeo.setDrawRange(0,lIdx*2);
+    renderer.render(scene,camera);
+  }
+  loop();
+  onResize(renderer,camera,canvas);
+})();
+
+/* HERO BG — drifting particle field (same as skills section) */
+(function heroParticlesScene(){
+  const canvas = document.getElementById('hero-particles-canvas');
+  if(!canvas) return;
+  const renderer = makeRenderer(canvas);
+  const scene = new THREE.Scene();
+  const {w, h} = parentSize(canvas);
+  renderer.setSize(w, h, false);
+  const camera = new THREE.PerspectiveCamera(60, w/h, 0.1, 500);
+  camera.position.z = 22;
+
+  const N = 600;
+  const positions = new Float32Array(N * 3);
+  const vel = [];
+  for(let i = 0; i < N; i++){
+    positions[i*3]   = (Math.random() - 0.5) * 80;
+    positions[i*3+1] = (Math.random() - 0.5) * 55;
+    positions[i*3+2] = (Math.random() - 0.5) * 22;
+    vel.push({x:(Math.random()-0.5)*0.005, y:(Math.random()-0.5)*0.005});
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const mat = new THREE.PointsMaterial({color:0x2a2a2a, size:0.13, sizeAttenuation:true});
+  const pts = new THREE.Points(geo, mat);
+  scene.add(pts);
+
+  let f = 0;
+  function loop(){
+    requestAnimationFrame(loop);
+    const p = geo.attributes.position.array;
+    for(let i = 0; i < N; i++){
+      p[i*3]   += vel[i].x;
+      p[i*3+1] += vel[i].y;
+      if(Math.abs(p[i*3])   > 40) vel[i].x *= -1;
+      if(Math.abs(p[i*3+1]) > 27) vel[i].y *= -1;
+    }
+    geo.attributes.position.needsUpdate = true;
+    pts.rotation.z = (f++) * 0.0002;
+    renderer.render(scene, camera);
+  }
+  loop();
+  onResize(renderer, camera, canvas);
+})();
+
+/* HERO — Self-moving particles only, no mouse interaction, higher speed */
+(function heroScene(){
+  const canvas=document.getElementById('hero-canvas');
+  if(!canvas) return;
+  const renderer=makeRenderer(canvas);
+  const scene=new THREE.Scene();
+  const{w,h}=parentSize(canvas);
+  renderer.setSize(w,h,false);
+  const camera=new THREE.PerspectiveCamera(55,w/h,0.1,300);
+  camera.position.z=28;
+
+  const N=3200;
+  const pos0=new Float32Array(N*3);
+  const pos=new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    const theta=Math.acos(2*Math.random()-1);
+    const phi=2*Math.PI*Math.random();
+    const r=10+(Math.random()-0.5)*3.5;
+    pos0[i*3]=r*Math.sin(theta)*Math.cos(phi);
+    pos0[i*3+1]=r*Math.sin(theta)*Math.sin(phi);
+    pos0[i*3+2]=r*Math.cos(theta);
+    pos[i*3]=pos0[i*3];pos[i*3+1]=pos0[i*3+1];pos[i*3+2]=pos0[i*3+2];
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const mat=new THREE.PointsMaterial({color:0xffffff,size:0.065,sizeAttenuation:true,transparent:true,opacity:0.72});
+  const pts=new THREE.Points(geo,mat);
+  scene.add(pts);
+
+  /* No mousemove listener — purely autonomous movement */
+  let frame=0;
+  function loop(){
+    requestAnimationFrame(loop);
+    frame++;
+    /* Higher speed: multiplier raised from 0.003 → 0.008
+       Rotation speed raised from 0.12/0.04 → 0.28/0.10 */
+    const t=frame*0.008;
+    const p=geo.attributes.position.array;
+    for(let i=0;i<N;i++){
+      const ox=pos0[i*3],oy=pos0[i*3+1],oz=pos0[i*3+2];
+      const breathe=1+Math.sin(t+ox*0.1)*0.018;
+      p[i*3]=ox*breathe;
+      p[i*3+1]=oy*breathe;
+      p[i*3+2]=oz*breathe;
+    }
+    geo.attributes.position.needsUpdate=true;
+    pts.rotation.y=t*0.28;
+    pts.rotation.x=t*0.10;
+    renderer.render(scene,camera);
+  }
+  loop();
+  onResize(renderer,camera,canvas);
+})();
+
+/* ABOUT — DNA helix */
+(function aboutScene(){
+  const canvas=document.getElementById('about-canvas');
+  if(!canvas) return;
+  const renderer=makeRenderer(canvas);
+  const scene=new THREE.Scene();
+  const{w,h}=parentSize(canvas);
+  renderer.setSize(w,h,false);
+  const camera=new THREE.PerspectiveCamera(55,w/h,0.1,300);
+  camera.position.z=24;
+  const helixPts=[],helixPts2=[];
+  const N=200;
+  for(let i=0;i<N;i++){
+    const t=(i/N)*Math.PI*6-Math.PI*3;
+    helixPts.push(new THREE.Vector3(Math.cos(t)*4,t*1.2,Math.sin(t)*4));
+    helixPts2.push(new THREE.Vector3(Math.cos(t+Math.PI)*4,t*1.2,Math.sin(t+Math.PI)*4));
+  }
+  function makeHelix(pts,col){
+    const curve=new THREE.CatmullRomCurve3(pts);
+    const geo=new THREE.TubeGeometry(curve,200,0.06,4,false);
+    const mat=new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.35});
+    return new THREE.Mesh(geo,mat);
+  }
+  const h1=makeHelix(helixPts,0x444444);
+  const h2=makeHelix(helixPts2,0x333333);
+  scene.add(h1);scene.add(h2);
+  const rungGroup=new THREE.Group();
+  for(let i=0;i<N;i+=8){
+    const a=helixPts[i],b=helixPts2[i];
+    const geo=new THREE.BufferGeometry().setFromPoints([a,b]);
+    const mat=new THREE.LineBasicMaterial({color:0x222222,transparent:true,opacity:0.35});
+    rungGroup.add(new THREE.Line(geo,mat));
+  }
+  scene.add(rungGroup);
+  let f=0;
+  function loop(){
+    requestAnimationFrame(loop);f++;
+    h1.rotation.y=f*0.008;h2.rotation.y=f*0.008;rungGroup.rotation.y=f*0.008;
+    renderer.render(scene,camera);
+  }
+  loop();
+  onResize(renderer,camera,canvas);
+})();
+
+/* SKILLS — Drifting particle field */
+(function skillsScene(){
+  const canvas=document.getElementById('skills-canvas');
+  if(!canvas) return;
+  const renderer=makeRenderer(canvas);
+  const scene=new THREE.Scene();
+  const{w,h}=parentSize(canvas);
+  renderer.setSize(w,h,false);
+  const camera=new THREE.PerspectiveCamera(60,w/h,0.1,500);
+  camera.position.z=22;
+  const N=600;
+  const positions=new Float32Array(N*3);
+  const vel=[];
+  for(let i=0;i<N;i++){
+    positions[i*3]=(Math.random()-0.5)*80;
+    positions[i*3+1]=(Math.random()-0.5)*55;
+    positions[i*3+2]=(Math.random()-0.5)*22;
+    vel.push({x:(Math.random()-0.5)*0.005,y:(Math.random()-0.5)*0.005});
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  const mat=new THREE.PointsMaterial({color:0x2a2a2a,size:0.13,sizeAttenuation:true});
+  const pts=new THREE.Points(geo,mat);
+  scene.add(pts);
+  let f=0;
+  function loop(){
+    requestAnimationFrame(loop);
+    const p=geo.attributes.position.array;
+    for(let i=0;i<N;i++){
+      p[i*3]+=vel[i].x;p[i*3+1]+=vel[i].y;
+      if(Math.abs(p[i*3])>40)vel[i].x*=-1;
+      if(Math.abs(p[i*3+1])>27)vel[i].y*=-1;
+    }
+    geo.attributes.position.needsUpdate=true;
+    pts.rotation.z=(f++)*0.0002;
+    renderer.render(scene,camera);
+  }
+  loop();
+  onResize(renderer,camera,canvas);
+})();
+
+/* PROJECTS — Orbiting torus rings */
+(function projectsScene(){
+  const canvas=document.getElementById('projects-canvas');
+  if(!canvas) return;
+  const renderer=makeRenderer(canvas);
+  const scene=new THREE.Scene();
+  const{w,h}=parentSize(canvas);
+  renderer.setSize(w,h,false);
+  const camera=new THREE.PerspectiveCamera(60,w/h,0.1,500);
+  camera.position.z=36;
+  const rings=[];
+  [8,13,18,23,29].forEach((r,i)=>{
+    const geo=new THREE.TorusGeometry(r,0.045,4,120);
+    const mat=new THREE.MeshBasicMaterial({color:0x1e1e1e,transparent:true,opacity:0.5});
+    const mesh=new THREE.Mesh(geo,mat);
+    mesh.rotation.x=Math.PI/4+i*0.28;mesh.rotation.z=i*0.44;
+    mesh.userData={rx:0.00018*(i%2===0?1:-1),ry:0.00035*(i%2===0?-1:1)};
+    scene.add(mesh);rings.push(mesh);
+  });
+  function loop(){
+    requestAnimationFrame(loop);
+    rings.forEach(r=>{r.rotation.x+=r.userData.rx;r.rotation.y+=r.userData.ry;});
+    renderer.render(scene,camera);
+  }
+  loop();
+  onResize(renderer,camera,canvas);
+})();
+
+/* CERTIFICATIONS — Wireframe icosahedra */
+(function certScene(){
+  const canvas=document.getElementById('cert-canvas');
+  if(!canvas) return;
+  const renderer=makeRenderer(canvas);
+  const scene=new THREE.Scene();
+  const{w,h}=parentSize(canvas);
+  renderer.setSize(w,h,false);
+  const camera=new THREE.PerspectiveCamera(60,w/h,0.1,300);
+  camera.position.z=26;
+  const m1=new THREE.Mesh(new THREE.IcosahedronGeometry(9,1),new THREE.MeshBasicMaterial({color:0x242424,wireframe:true,transparent:true,opacity:0.55}));
+  const m2=new THREE.Mesh(new THREE.IcosahedronGeometry(15,0),new THREE.MeshBasicMaterial({color:0x181818,wireframe:true,transparent:true,opacity:0.4}));
+  scene.add(m1);scene.add(m2);
+  function loop(){
+    requestAnimationFrame(loop);
+    m1.rotation.x+=0.0012;m1.rotation.y+=0.0018;
+    m2.rotation.x-=0.0006;m2.rotation.y+=0.0009;
+    renderer.render(scene,camera);
+  }
+  loop();
+  onResize(renderer,camera,canvas);
+})();
+
+/* CONTACT — Wave grid */
+(function contactScene(){
+  const canvas=document.getElementById('contact-canvas');
+  if(!canvas) return;
+  const renderer=makeRenderer(canvas);
+  const scene=new THREE.Scene();
+  const{w,h}=parentSize(canvas);
+  renderer.setSize(w,h,false);
+  const camera=new THREE.PerspectiveCamera(60,w/h,0.1,300);
+  camera.position.z=22;
+  const plane=new THREE.Mesh(
+    new THREE.PlaneGeometry(60,60,32,32),
+    new THREE.MeshBasicMaterial({color:0x1c1c1c,wireframe:true,transparent:true,opacity:0.45})
+  );
+  plane.rotation.x=-Math.PI/3;
+  scene.add(plane);
+  let f=0;
+  function loop(){
+    requestAnimationFrame(loop);
+    const pos=plane.geometry.attributes.position;
+    const t=(f++)*0.018;
+    for(let i=0;i<pos.count;i++){
+      pos.setZ(i,Math.sin(pos.getX(i)*0.14+t)*1.4+Math.sin(pos.getY(i)*0.14+t*0.75)*1.4);
+    }
+    pos.needsUpdate=true;
+    renderer.render(scene,camera);
+  }
+  loop();
+  onResize(renderer,camera,canvas);
+})();
+
+/* NAV COMPACT */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.style.padding=window.scrollY>80?'13px 64px':'22px 64px';
+},{passive:true});
+</script>
+</body>
+</html>
