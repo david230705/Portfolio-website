@@ -29,4 +29,5 @@ The design includes custom sections, animations, and reusable styling components
 The website is deployed using Vercel.
 Link: https://davidpaul-portfolio.vercel.app
 
-![Portfolio Preview](screenshots/home.png)
+<img width="1858" height="870" alt="image" src="https://github.com/user-attachments/assets/8ef7c397-8c1f-43d1-a2e5-1668e0d04f5b" />
+
